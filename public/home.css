@@ -8,6 +8,21 @@ html {
     box-sizing: border-box;
 }
 
+.list-items{
+    display: flex;
+
+    align-items: center;
+}
+
+.user-profile{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    /* font-weight: bold; */
+    font-size: larger;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #480ca8, #4cc9f0);
@@ -29,6 +44,14 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft box shadow */
     transition: background 0.3s ease-in-out;
 }
+
+
+.profile-links{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
 
 header .logo {
     font-size: 1.8em;

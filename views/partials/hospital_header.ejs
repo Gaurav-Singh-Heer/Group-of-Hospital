@@ -17,6 +17,27 @@
             box-shadow: 7px 10px 9px rgba(0, 0, 0, 0.3);
         }
 
+        .user-profile{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            /* font-weight: bold; */
+            font-size: larger;
+        }
+
+        .profile-links{
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .list-items{
+            display: flex;
+
+            align-items: center;
+        }
+
         /* Styling for the scrolling cards */
         .cards {
             display: flex;
@@ -179,6 +200,7 @@
             background-image: linear-gradient(180deg, #4f7bc3, #9cc3c9);
         }
 
+
         #contact h2 {
             font-size: 32px;
             color: white;
@@ -253,10 +275,20 @@
     <div class="logo">Group of Hospitals</div>
     <nav>
         <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="#departments">Our Departments</a></li>
-            <li><a href="#appointments">Appointment</a></li>
-            <li><a href="#contact">Contact Us</a></li>
+            <li class="list-items"><a href="/home" >Home</a></li>
+            <li class="list-items"><a href="#departments" >Our Departments</a></li>
+            <li class="list-items"><a href="/appointments" >Your Appointments</a></li>
+            <li class="list-items"><a href="#contact" >Contact Us</a></li>
+            <li class="user-profile">
+                <div><p><%= user.name %></p></div> <!-- Replace with your actual user variable -->
+                <div class="profile-links">
+                    <div><img src="/assets/profile-icon.png" alt="User Icon" style="width: 35px; height: 35px"></div>
+                    <!-- <i class="fa-solid fa-user"></i> -->
+                    <div><a href="/logout"><img src="/assets/logout.png" alt="User Icon" style="width: 25px; height: 25px"></a></div>
+                </div>
+            </li>
         </ul>
     </nav>
+    
+
 </header>

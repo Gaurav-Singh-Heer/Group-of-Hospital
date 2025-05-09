@@ -40,6 +40,7 @@ html,body{
   height: 50px;
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 30px;
   position: relative;
 }
 .wrapper form .field input{
@@ -67,13 +68,14 @@ form .field input:valid{
   transform: translateY(-50%);
   transition: all 0.3s ease;
 }
+
 form .field input:focus ~ label,
 form .field input:valid ~ label{
   top: 0%;
   font-size: 16px;
   color: #4158d0;
   background: #fff;
-  transform: translateY(-50%);
+  /* transform: translateY(-50%); */
 }
 form .content{
   display: flex;

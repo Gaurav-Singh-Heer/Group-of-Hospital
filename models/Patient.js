@@ -8,6 +8,7 @@ const patientSchema = new mongoose.Schema({
   email: String,
   department: String,
   date: String, // Can be Date type if you plan to parse it properly
+  hospital: String,
 });
 
 module.exports = mongoose.model("Patient", patientSchema);

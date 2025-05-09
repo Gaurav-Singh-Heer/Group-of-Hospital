@@ -15,23 +15,50 @@
             <option value="other">Other</option>
         </select>
 
-        <label for="email"><b>Email:</b></label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        
+
+        <!-- <label for="email"><b>Email:</b></label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required> -->
 
         <label for="department"><b>Choose Department:</b></label>
         <select id="department" name="department" required>
             <option value="" disabled selected>Select a department</option>
-            <option value="cardiology">Cardiology</option>
-            <option value="neurology">Neurology</option>
-            <option value="orthopedics">Orthopedics</option>
-            <option value="radiology">Radiology</option>
-            <option value="ent">ENT (Ear, Nose, Throat)</option>
-            <option value="gastroenterology">Gastroenterology</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Radiology">Radiology</option>
+            <option value="ENT">ENT (Ear, Nose, Throat)</option>
+            <option value="Gastroenterology">Gastroenterology</option>
         </select>
 
         <label for="date"><b>Preferred Date:</b></label>
         <input type="date" id="date" name="date" required>
 
+        <!-- <label for="hospital"><b>Hospital:</b></label>
+        <select id="hospital" name="hospital" required>
+            <option value="" disabled selected>Select Hospital</option>
+            <option value="PGIMER">PGIMER</option>
+            <option value="GMCH-32">GMCH-32</option>
+            <option value="MAX">MAX</option>
+        </select> -->
+
         <button type="submit">Submit</button>
     </form>
+
 </section>
+
+<!-- script for date validation  -->
+<!-- <script>
+    const dateInput = document.getElementById("date");
+    const today = new Date();
+    const nextWeek = new Date();
+    nextWeek.setDate(today.getDate() + 14);
+  
+    // Format to yyyy-mm-dd
+    const formatDate = (date) => {
+      return date.toISOString().split('T')[0];
+    };
+  
+    dateInput.min = formatDate(today);
+    dateInput.max = formatDate(nextWeek);
+</script> -->

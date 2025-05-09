@@ -1,12 +1,41 @@
 const express = require('express');
+const User = require('../models/User');
 const router = express.Router();
+
 
 // GET routes to render EJS views
 router.get('/', (req, res) => {
     res.render('index');
 });
 
-router.get('/home', (req, res) => {
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Logout error:', err);
+            return res.status(500).send("Logout failed");
+        }
+        // res.status(200).json({message: "Login Again"});
+        res.clearCookie('connect.sid'); // Default session cookie name
+        res.redirect('/login'); // Redirect to login or homepage
+    });
+});
+
+
+router.get('/home', async (req, res) => {
+    const email = req.session?.email || null;
+    let user = null;
+
+    if (!email) {
+        return res.redirect('/login');
+    }
+    
+    if (email) {
+        try {
+            user = await User.findOne({ email });
+        } catch (err) {
+            console.error("Error fetching user:", err);
+        }
+    }
     res.render('home', {
         features: [
             { title: "Top Facilities", description: "We partner with hospitals equipped with cutting-edge technology for the best care." },
@@ -19,7 +48,8 @@ router.get('/home', (req, res) => {
             { name: "GMCH-32", description: "Providing exceptional care with state-of-the-art facilities.", link: "/home/gmch" },
             { name: "PGIMER", description: "Expert doctors and 24/7 emergency services.", link: "/home/pgimer" },
             { name: "Max Healthcare", description: "Focused on delivering patient-centered healthcare.", link: "/home/max" }
-        ]
+        ],
+        user:user
     });
 });
 
@@ -27,30 +57,112 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
+
+
 router.get('/register', (req, res) => {
+    let name = req.query.name;  // Use req.query for GET parameters
+    console.log("This is req name: " + name);
     res.render('signup');
 });
 
-router.get('/home/gmch', (req, res) => {
-    res.render('hospital/gmch', { title: 'GMCH Hospital' });
+
+router.get('/home/gmch', async (req, res) => {
+    const email = req.session?.email || null;
+
+    if (!email) {
+        res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            alert("Login again");
+            res.redirect('/login');
+        }
+
+        res.render('hospital/gmch', {
+            title: 'GMCH Hospital',
+            user: user
+        });
+    } catch (err) {
+        console.error("Error fetching user:", err);
+        res.render('login', {
+            title: 'Login',
+            message: 'An error occurred. Please login again.'
+        });
+    }
 });
 
-router.get('/home/pgimer', (req, res) => {
-    res.render('hospital/pgimer', { title: 'PGI Hospital' });
+
+
+
+router.get('/home/pgimer', async (req, res) => {
+    const email = req.session?.email || null;
+
+    if (!email) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.redirect('/login');
+        }
+
+        res.render('hospital/pgimer', {
+            title: 'PGIMER Hospital',
+            user: user
+        });
+    } catch (err) {
+        console.error("Error fetching user:", err);
+        res.render('login', {
+            title: 'Login',
+            message: 'An error occurred. Please login again.'
+        });
+    }
 });
 
-router.get('/home/max', (req, res) => {
-    res.render('hospital/max', { title: 'MAX Hospital' });
+
+router.get('/home/max', async (req, res) => {
+    const email = req.session?.email || null;
+
+    if (!email) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.redirect('/login');
+        }
+
+        res.render('hospital/max', {
+            title: 'MAX Hospital',
+            user: user
+        });
+    } catch (err) {
+        console.error("Error fetching user:", err);
+        res.render('login', {
+            title: 'Login',
+            message: 'An error occurred. Please login again.'
+        });
+    }
 });
+
+
 
 router.get('/home/contact', (req, res) => {
-    res.render('contact');
+    const email = req.session?.email || null;
+    let user = null;
+    res.render('contact',{user: user});
 });
 
 // router.get('/home/about', (req, res) => {
 //     res.render('about');
 // });
 router.get('/home/about', (req, res) => {
+    const email = req.session?.email || null;
+    let user = null;
     res.render('about', {
         services: [
             { icon: '🩺', title: 'Emergency Care', description: '24/7 emergency services to handle critical situations with expertise.' },
@@ -77,7 +189,8 @@ router.get('/home/about', (req, res) => {
             { text: "The doctors and nurses were amazing. I received the best care possible. Highly recommend!", author: "Patient A" },
             { text: "Great experience. The hospital is clean, and the staff is highly professional. Thank you!", author: "Patient B" },
             { text: "A wonderful facility with caring professionals. I felt truly supported during my recovery.", author: "Patient C" }
-        ]
+        ],
+        user: user
     });
 });
   

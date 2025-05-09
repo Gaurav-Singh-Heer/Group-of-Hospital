@@ -20,17 +20,21 @@
             const name = document.getElementById("name").value;
             const age = document.getElementById("age").value;
             const gender = document.getElementById("gender").value;
-            const email = document.getElementById("email").value;
+            // const email = document.getElementById("email").value;
             const department = document.getElementById("department").value;
             const date = document.getElementById("date").value;
+            // const hospital = document.getElementById("hospital").value;
+
     
             // Ensure all fields are filled
-            if (!name || !age || !gender || !email || !department || !date) {
+            if (!name || !age || !gender || !department || !date) {
                 alert("Please fill all the fields.");
                 return;
             }
+
+            const hospital = "MAX";
     
-            const appointmentData = { name, age, gender, email, department, date };
+            const appointmentData = { name, age, gender, department, date, hospital};
     
             try {
                 // Send form data to server

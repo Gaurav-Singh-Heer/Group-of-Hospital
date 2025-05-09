@@ -2,22 +2,26 @@ const User = require('../models/User');
 
 // LOGIN
 exports.login = async (req, res) => {
-   const { email, password } = req.body;
+   const { email, password } = req.body; // ✅ Fix: get email and password from req.body
+
    try {
       const user = await User.findOne({ email });
 
-        if (!user || user.password !== password) {
-            console.log("IDHAR ERROR AYA KYA??")
-            return res.status(401).json({ error: 'Invalid credentials', redirect: '/signup' });
-        
-        }
+      if (!user || user.password !== password) {
+         console.log("IDHAR ERROR AYA KYA??");
+         return res.status(401).json({ error: 'Invalid credentials in auth controller' });
+      }
 
-        res.status(200).json({ message: 'Login successful', redirect: '/home' });
+      req.session.email = user.email;
+
+      res.status(200).json({ message: 'Login successful', redirect: '/home' });
+
    } catch (err) {
       console.error('Login error:', err);
       res.status(500).json({ error: 'Server error' });
    }
 };
+
 
 // SIGNUP
 exports.signup = async (req, res) => {
