@@ -23,6 +23,6 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
-    "@vercel/node": "^5.1.8",
+    "@vercel/node": "^5.1.8"
   }
 }
