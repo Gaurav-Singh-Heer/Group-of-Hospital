@@ -1,3 +1,4 @@
+require('dotenv').config(); // <-- Add this line at the top
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -17,7 +18,7 @@ const logger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error_handler');
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/Group_of_Hospital', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
@@ -32,37 +33,37 @@ const app = express();
 // Logger middleware
 app.use(logger);
 
-// ✅ Setup express-session middleware
+// Session middleware
 app.use(session({
-  secret: 'your-secret-key', // Replace with a secure key in production
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set to true only if using HTTPS
+  cookie: { secure: false }
 }));
 
-// Body parser for JSON and URL-encoded form data
+// Body parser
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// View engine setup
+// View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Route handlers (order matters!)
+// Routes
 app.use(authRoutes);
 app.use(pageRoutes);
 app.use(patientRoutes);
 app.use(sahayakRoutes);
 app.use(appointmentRoutes);
 
-// Error handling middleware
+// Error handler
 app.use(errorHandler);
 
-// Start server
-const PORT = 3000;
+// Server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("server is running on port");
   console.log(`http://localhost:${PORT}`);

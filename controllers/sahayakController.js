@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");// importing google genertive ai
-const genAI = new GoogleGenerativeAI("AIzaSyCfhGuCyuPlIarRE8z7rd5eTck07iyeYAQ");//Gemini api key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });// Which model to use
 
 exports.sendMessage = async (req, res) => {
@@ -25,5 +27,4 @@ exports.sendMessage = async (req, res) => {
     `;
     const result = await model.generateContent(prompt);
     res.json({ message: result.response.text() });
-
 }
