@@ -3,56 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>no-appointments</title>
+  <title>No Appointments | Group of Hospitals</title>
+  <link rel="stylesheet" href="/css/theme.css">
   <style>
-
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background-color: #ffffff;
-      font-family: 'Arial', sans-serif;
-    }
-    
-
-    img {
-      max-width: 90%;
-      max-height: 90%;
-      /* border-radius: 10px; */
-      /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
-    }
-    
-    .btn-appointment {
-      background-color: #bd49eb;
-      color: white;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-appointment:hover {
-      background-color: #af1ff1;
-      box-shadow: 0 20px 20px rgba(0, 0, 0, 0.15);
-    }
-  
-    .btn-appointment a {
-      color: white;
-      text-decoration: none;
-    }
-
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    .empty { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 48px 24px; }
+    .empty img { max-width: min(420px, 80%); margin-bottom: 24px; }
+    .empty h1 { font-size: 1.8rem; margin-bottom: 10px; }
+    .empty p { color: var(--ink-500); max-width: 440px; margin-bottom: 26px; }
+    .empty .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
   </style>
 </head>
 <body>
-  <img src="/assets/no-appt.png" alt="No Appointments Available">
-  <button class="btn-appointment"><a href="/home">Book Appointments</a></button>
+  <header class="site-header">
+    <div class="container">
+      <a href="/home" class="brand"><span class="brand__mark">✚</span> Group of Hospitals</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/home">Home</a></li>
+          <li><a href="/appointments">Your Appointments</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="empty">
+    <img src="/assets/no-appt.png" alt="No appointments yet">
+    <h1>No appointments yet</h1>
+    <p>You haven't booked any appointments. Choose a hospital and schedule your first visit — it only takes a minute.</p>
+    <div class="actions">
+      <a href="/home" class="btn btn--primary">Book an Appointment</a>
+      <a href="/home/contact" class="btn btn--outline">Need Help?</a>
+    </div>
+  </section>
+
+  <script src="/js/ui.js"></script>
 </body>
 </html>

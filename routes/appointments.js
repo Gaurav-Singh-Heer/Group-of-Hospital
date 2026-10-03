@@ -1,47 +1,74 @@
 const express = require('express');
 const router = express.Router();
-const Appointment = require('../models/appointment');
+const Appointment = require('../models/Appointment');
+const { requireAuth } = require('../middlewares/auth');
 
-// Render EJS page with appointment data
+// Render the empty-state page
 router.get('/no-appointments', (req, res) => {
   res.render('no-appointments');
 });
 
-router.get('/appointments', async (req, res) => {
+// List the logged-in user's appointments
+router.get('/appointments', requireAuth, async (req, res) => {
   const sessionEmail = req.session.email;
-  console.log("Logged in email:", sessionEmail);
 
   try {
-    let appointments;
-
-    if (sessionEmail) {
-      // Find appointments matching the logged-in user's email
-      appointments = await Appointment.find({ email: sessionEmail });
-    } else {
-      // If no email is in session, fetch all appointments (or handle unauthorized access)
-      appointments = await Appointment.find();
-    }
-
-    console.log("Session email:", sessionEmail);
-
-    if (sessionEmail == null) {
-      console.log("Session email is null:", sessionEmail);
-      return res.redirect('/login'); // return here
-    }
+    const appointments = await Appointment.find({ email: sessionEmail });
 
     if (appointments.length === 0) {
-      console.log("No appointments");
-      return res.redirect('/no-appointments'); // return here
+      return res.redirect('/no-appointments');
     }
 
-    console.log("Yes appointments");
-    // sort the appointments ww.r.t the dates
     appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
-    return res.render('appointments', { appointments }); // return here
-
+    return res.render('appointments', { appointments });
   } catch (err) {
     console.error('Error fetching appointments:', err);
     res.status(500).send('Server error');
+  }
+});
+
+// Reschedule: update the date of an appointment the user owns
+router.put('/appointments/:id', requireAuth, async (req, res) => {
+  const { date } = req.body;
+  if (!date) {
+    return res.status(400).json({ error: 'A new date is required.' });
+  }
+
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found.' });
+    }
+    // Ownership check — users can only modify their own appointments.
+    if (appointment.email !== req.session.email) {
+      return res.status(403).json({ error: 'You can only modify your own appointments.' });
+    }
+
+    appointment.date = date;
+    await appointment.save();
+    res.json({ message: 'Appointment rescheduled successfully.' });
+  } catch (err) {
+    console.error('Error rescheduling appointment:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Cancel: delete an appointment the user owns
+router.delete('/appointments/:id', requireAuth, async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found.' });
+    }
+    if (appointment.email !== req.session.email) {
+      return res.status(403).json({ error: 'You can only cancel your own appointments.' });
+    }
+
+    await appointment.deleteOne();
+    res.json({ message: 'Appointment cancelled successfully.' });
+  } catch (err) {
+    console.error('Error cancelling appointment:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

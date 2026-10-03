@@ -1,11 +1,13 @@
     <%- include('../partials/hospital_header') %>
 
     <section class="hero" id="home">
-        <div class="content">
-            <h1>Max-Health Care Mohali</h1>
-            <p>A privately owned helthcare centre</p>
+        <div class="container">
+            <div class="content">
+                <h1>Max Healthcare Mohali</h1>
+                <p>A privately owned healthcare centre focused on patient-first care.</p>
+            </div>
+            <img src="/assets/maxMain.png" alt="Max Healthcare Mohali">
         </div>
-        <img src="../assets/maxMain.png" alt="GMCH">
     </section>
 
     <%- include('../partials/dept_cards') %>
@@ -38,7 +40,7 @@
     
             try {
                 // Send form data to server
-                const response = await fetch("http://localhost:3000/home", {
+                const response = await fetch("/home", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -62,9 +64,12 @@
         });
     </script>    
 
-<section id="contact">
-    <div class="contact-content">
-      <h2>Contact & Location</h2>
+<section class="block" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Reach us</span>
+        <h2 class="section-title">Contact &amp; Location</h2>
+      </div>
       <div class="contact-info">
         <div class="info-item">
           <strong>Address:</strong>

@@ -3,116 +3,151 @@
 
 <head>
    <meta charset="utf-8">
-   <title>Sign Up</title>
-   <link rel="stylesheet" href="login.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Sign Up | Group of Hospitals</title>
+   <link rel="stylesheet" href="/css/theme.css">
+   <style>
+      body { min-height: 100vh; display: grid; place-items: center; padding: 24px;
+             background: var(--brand-gradient); }
+      .auth {
+         width: min(960px, 100%);
+         background: #fff;
+         border-radius: var(--radius-lg);
+         box-shadow: var(--shadow-lg);
+         overflow: hidden;
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+      }
+      .auth__aside {
+         background: var(--brand-gradient);
+         color: #fff;
+         padding: 48px 40px;
+         display: flex; flex-direction: column; justify-content: center; gap: 18px;
+         position: relative; overflow: hidden;
+      }
+      .auth__aside::after {
+         content: ""; position: absolute; width: 320px; height: 320px; border-radius: 50%;
+         background: rgba(255,255,255,0.12); top: -120px; left: -100px;
+      }
+      .auth__aside .brand { color: #fff; font-size: 1.3rem; }
+      .auth__aside .brand .brand__mark { background: rgba(255,255,255,0.2); }
+      .auth__aside h2 { color: #fff; font-size: 2rem; margin-top: 10px; }
+      .auth__aside p { color: rgba(255,255,255,0.9); }
+      .auth__aside ul { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+      .auth__aside li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.95); font-size: 0.96rem; }
+      .auth__aside li::before { content: "✓"; display: grid; place-items: center; width: 24px; height: 24px;
+         background: rgba(255,255,255,0.2); border-radius: 50%; font-size: 0.8rem; flex: none; }
+      .auth__form { padding: 40px 44px; }
+      .auth__form h1 { font-size: 1.9rem; margin-bottom: 6px; }
+      .auth__form .sub { color: var(--ink-500); margin-bottom: 24px; }
+      .terms { display: flex; align-items: flex-start; gap: 8px; font-size: 0.88rem; color: var(--ink-700); margin-bottom: 18px; }
+      .terms input { margin-top: 3px; }
+      .login-link { text-align: center; margin-top: 20px; color: var(--ink-500); font-size: 0.95rem; }
+      .login-link a { font-weight: 600; }
+      @media (max-width: 760px) {
+         .auth { grid-template-columns: 1fr; }
+         .auth__aside { display: none; }
+         .auth__form { padding: 36px 28px; }
+      }
+   </style>
 </head>
 
 <body>
-   <div class="wrapper">
-      <div class="title">
-         Register
-      </div>
-      <form id="signup-form">
-         <div class="field">
-            <input type="text" id="name" required>
-            <label>Full Name</label>
-         </div>
-         <div class="field">
-            <input type="email" id="email" required>
-            <label>Email Address</label>
-         </div>
-         <div class="field">
-            <input type="password" id="password" required>
-            <label>Password</label>
-         </div>
-         <div class="field">
-            <input type="password" id="confirm-password" required>
-            <label>Confirm Password</label>
-         </div>
-         <div class="content">
-            <div class="checkbox">
-               <input type="checkbox" id="accept-terms" required>
-               <label for="accept-terms">I accept the terms and conditions</label>
+   <div class="auth">
+      <aside class="auth__aside">
+         <div class="brand"><span class="brand__mark">✚</span> Group of Hospitals</div>
+         <h2>Create your account</h2>
+         <p>Join thousands of patients booking trusted healthcare in just a few clicks.</p>
+         <ul>
+            <li>Free to join, no hidden fees</li>
+            <li>One account for every hospital</li>
+            <li>Track all your appointments</li>
+         </ul>
+      </aside>
+
+      <div class="auth__form">
+         <h1>Register</h1>
+         <p class="sub">It only takes a minute to get started.</p>
+
+         <form id="signup-form">
+            <div class="field">
+               <label for="name">Full Name</label>
+               <input type="text" id="name" placeholder="Jane Doe" required>
             </div>
-         </div>
-         <div class="field">
-            <input type="submit" value="Sign Up">
-         </div>
-         <div class="login-link">
-            Already a member? <a href="/login">Login now</a>
-         </div>
-      </form>
+            <div class="field">
+               <label for="email">Email Address</label>
+               <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+               <label for="password">Password</label>
+               <input type="password" id="password" placeholder="Min 8 chars, 1 upper, 1 number, 1 symbol" required>
+            </div>
+            <div class="field">
+               <label for="confirm-password">Confirm Password</label>
+               <input type="password" id="confirm-password" placeholder="Re-enter your password" required>
+            </div>
+            <label class="terms">
+               <input type="checkbox" id="accept-terms" required>
+               <span>I accept the terms and conditions and privacy policy.</span>
+            </label>
+            <button type="submit" class="btn btn--primary btn--block">Sign Up</button>
+            <div class="login-link">Already a member? <a href="/login">Login now</a></div>
+         </form>
+      </div>
    </div>
 
    <script>
       document.getElementById("signup-form").addEventListener("submit", async (e) => {
-         e.preventDefault(); // Prevent default form submission
-   
+         e.preventDefault();
+
          const name = document.getElementById("name").value;
          const email = document.getElementById("email").value;
          const password = document.getElementById("password").value;
          const confirmPassword = document.getElementById("confirm-password").value;
          const acceptTerms = document.getElementById("accept-terms").checked;
-   
-         // 1st Check: Password length >= 8
+
          if (password.length < 8) {
             alert("Password must be at least 8 characters long.");
             return;
          }
-   
-         // 2nd Check: Uppercase letter present
          if (!/[A-Z]/.test(password)) {
             alert("Password must contain at least one uppercase letter.");
             return;
          }
-   
-         // 3rd Check: Lowercase letter present
          if (!/[a-z]/.test(password)) {
             alert("Password must contain at least one lowercase letter.");
             return;
          }
-   
-         // 4th Check: Digit present
          if (!/\d/.test(password)) {
             alert("Password must contain at least one digit.");
             return;
          }
-   
-         // 5th Check: Special character present
          if (!/[@$!%*?&]/.test(password)) {
             alert("Password must contain at least one special character (e.g., @$!%*?&).");
             return;
          }
-   
-         // Check if passwords match
          if (password !== confirmPassword) {
             alert("Passwords do not match.");
             return;
          }
-   
          if (!acceptTerms) {
             alert("You must accept the terms and conditions.");
             return;
          }
-   
+
          try {
-            // Change the URL to /signup (without .html)
-            const response = await fetch("http://localhost:3000/register", {
-               method: "POST",  // Update to PUT method for registration
-               headers: {
-                  "Content-Type": "application/json"
-               },
-               body: JSON.stringify({ name, email, password }) // Send registration details
+            const response = await fetch("/register", {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({ name, email, password })
             });
-   
-            // Handle response from server
+
             const data = await response.json();
             if (response.ok) {
                alert(data.message);
-               // Redirect user to login page
                window.location.href = "/login";
             } else {
-               alert(data.error); // Example: "Email already registered"
+               alert(data.error);
             }
          } catch (error) {
             console.error("Error:", error);
@@ -120,7 +155,6 @@
          }
       });
    </script>
-   
 </body>
 
 </html>

@@ -3,65 +3,95 @@
 
 <head>
    <meta charset="utf-8">
-   <title>Login</title>
-   <link rel="stylesheet" href="login.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Login | Group of Hospitals</title>
+   <link rel="stylesheet" href="/css/theme.css">
    <style>
-      .outer-div{
-         display: flex;
-         justify-content: center;
+      body { min-height: 100vh; display: grid; place-items: center; padding: 24px;
+             background: var(--brand-gradient); }
+      .auth {
+         width: min(960px, 100%);
+         background: #fff;
+         border-radius: var(--radius-lg);
+         box-shadow: var(--shadow-lg);
+         overflow: hidden;
+         display: grid;
+         grid-template-columns: 1fr 1fr;
       }
-      .error-message {
-         color: red;
-         font-size: 12px;
-         margin-top: 4px;
-         z-index: 100;
-         font-weight: 600;
+      .auth__aside {
+         background: var(--brand-gradient);
+         color: #fff;
+         padding: 48px 40px;
+         display: flex; flex-direction: column; justify-content: center; gap: 18px;
+         position: relative; overflow: hidden;
       }
-
-      .field input.invalid {
-         border: 1px solid red;
+      .auth__aside::after {
+         content: ""; position: absolute; width: 320px; height: 320px; border-radius: 50%;
+         background: rgba(255,255,255,0.12); bottom: -120px; right: -100px;
+      }
+      .auth__aside .brand { color: #fff; font-size: 1.3rem; }
+      .auth__aside .brand .brand__mark { background: rgba(255,255,255,0.2); }
+      .auth__aside h2 { color: #fff; font-size: 2rem; margin-top: 10px; }
+      .auth__aside p { color: rgba(255,255,255,0.9); }
+      .auth__aside ul { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+      .auth__aside li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.95); font-size: 0.96rem; }
+      .auth__aside li::before { content: "✓"; display: grid; place-items: center; width: 24px; height: 24px;
+         background: rgba(255,255,255,0.2); border-radius: 50%; font-size: 0.8rem; flex: none; }
+      .auth__form { padding: 48px 44px; }
+      .auth__form h1 { font-size: 1.9rem; margin-bottom: 6px; }
+      .auth__form .sub { color: var(--ink-500); margin-bottom: 28px; }
+      .form-row { display: flex; align-items: center; justify-content: space-between; margin: -4px 0 20px; font-size: 0.9rem; }
+      .form-row label { display: flex; align-items: center; gap: 7px; color: var(--ink-700); }
+      .signup-link { text-align: center; margin-top: 22px; color: var(--ink-500); font-size: 0.95rem; }
+      .signup-link a { font-weight: 600; }
+      @media (max-width: 760px) {
+         .auth { grid-template-columns: 1fr; }
+         .auth__aside { display: none; }
+         .auth__form { padding: 40px 28px; }
       }
    </style>
 </head>
 
 <body>
-   <div class="wrapper">
-      <div class="title">Login Form</div>
+   <div class="auth">
+      <aside class="auth__aside">
+         <div class="brand"><span class="brand__mark">✚</span> Group of Hospitals</div>
+         <h2>Welcome back</h2>
+         <p>Sign in to manage your appointments and connect with trusted hospitals near you.</p>
+         <ul>
+            <li>Book appointments in seconds</li>
+            <li>Access top specialists &amp; facilities</li>
+            <li>24/7 Sahayak AI assistant</li>
+         </ul>
+      </aside>
 
-      <form id="login-form" novalidate>
-         <div class="field">
-            <input type="text" id="email" required>
-            <label>Email Address</label>
-            <div class="outer-div">
+      <div class="auth__form">
+         <h1>Login</h1>
+         <p class="sub">Enter your credentials to continue.</p>
+
+         <form id="login-form" novalidate>
+            <div class="field">
+               <label for="email">Email Address</label>
+               <input type="email" id="email" placeholder="you@example.com" required>
                <div class="error-message" id="email-error"></div>
             </div>
-         </div>
 
-         <div class="field">
-            <input type="password" id="password" required>
-            <label>Password</label>
-            <div class="outer-div">
+            <div class="field">
+               <label for="password">Password</label>
+               <input type="password" id="password" placeholder="••••••••" required>
                <div class="error-message" id="password-error"></div>
             </div>
-         </div>
 
-         <div class="content">
-            <div class="checkbox">
-               <input type="checkbox" id="remember-me">
-               <label for="remember-me">Remember me</label>
-            </div>
-            <div class="pass-link">
+            <div class="form-row">
+               <label><input type="checkbox" id="remember-me"> Remember me</label>
                <a href="#">Forgot password?</a>
             </div>
-         </div>
 
-         <div class="field">
-            <input type="submit" value="Login">
-         </div>
-         <div class="signup-link">
-            Not a member? <a href="/register">Signup now</a>
-         </div>
-      </form>
+            <button type="submit" class="btn btn--primary btn--block">Login</button>
+
+            <div class="signup-link">Not a member? <a href="/register">Sign up now</a></div>
+         </form>
+      </div>
    </div>
 
    <script>
@@ -75,7 +105,6 @@
 
          let valid = true;
 
-         // Reset styles and messages
          emailError.textContent = "";
          passwordError.textContent = "";
          emailInput.classList.remove("invalid");
@@ -85,7 +114,6 @@
          const password = passwordInput.value.trim();
          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-         // Validation
          if (!email) {
             emailError.textContent = "Email is required.";
             emailInput.classList.add("invalid");
@@ -109,7 +137,7 @@
          if (!valid) return;
 
          try {
-            const response = await fetch("http://localhost:3000/login", {
+            const response = await fetch("/login", {
                method: "POST",
                headers: { "Content-Type": "application/json" },
                body: JSON.stringify({ email, password })
@@ -118,11 +146,13 @@
             const data = await response.json();
 
             if (response.ok) {
-               alert(data.message);
-               window.location.href = "/home";
+               // Use the server-provided target (/admin for admins, /home for users).
+               // Force a leading slash so it resolves from the site root, not /login/.
+               let target = data.redirect || "/home";
+               if (target[0] !== "/") target = "/" + target;
+               window.location.href = target;
             } else {
-               alert(data.error || "Invalid  ole ole credentials.");
-               // window.location.href = "/register";
+               alert(data.error || "Invalid credentials.");
             }
          } catch (error) {
             console.error("Error:", error);

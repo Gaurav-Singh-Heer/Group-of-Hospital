@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");// importing google genertive ai
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });// Which model to use
+const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });// Which model to use (stable alias — auto-tracks the current Flash model)
 
 exports.sendMessage = async (req, res) => {
     const { userMessage, followUp } = req.body
@@ -25,6 +25,15 @@ exports.sendMessage = async (req, res) => {
     
     User's new query: ${userMessage}
     `;
-    const result = await model.generateContent(prompt);
-    res.json({ message: result.response.text() });
+    try {
+        const result = await model.generateContent(prompt);
+        res.json({ message: result.response.text() });
+    } catch (err) {
+        // Gemini can return transient errors (e.g. 503 high demand). Don't let
+        // them crash the server — return a graceful message to the client.
+        console.error('Sahayak (Gemini) error:', err.message);
+        res.status(503).json({
+            message: "<b>Sahayak is busy right now.</b><br>Please try again in a moment."
+        });
+    }
 }
