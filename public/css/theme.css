@@ -370,10 +370,17 @@ img { max-width: 100%; display: block; }
     background: #fff;
     box-shadow: var(--shadow);
     transform: translateY(-120%);
-    transition: transform 0.3s ease;
+    /* visibility toggle guarantees the closed menu never peeks over the header,
+       regardless of its height (translateY alone can leave the bottom edge visible) */
+    visibility: hidden; opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s;
     border-bottom: 1px solid rgba(15,23,42,0.06);
   }
-  .nav-links.open { transform: translateY(0); }
+  .nav-links.open {
+    transform: translateY(0);
+    visibility: visible; opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
   .nav-links a { width: 100%; padding: 10px 0; }
   .nav-links a::after { display: none; }
 }
